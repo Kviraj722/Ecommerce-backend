@@ -34,25 +34,13 @@ const Auth = () => {
           });
 
           user.token = token;
-          console.log("user.token", user.token);
           user.password = undefined;
-          console.log("user ->>>>>>>", user);
           return res.status(200).json({
             success: true,
             message: `${user.accountType} login successfully`,
             token,
             user,
           });
-          // let options = {
-          //   expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-          //   httpOnly: true,
-          // };
-          // res.cookie("token", token, options).status(200).json({
-          //   success: true,
-          //   token,
-          //   user,
-          //   message: "User logged in successfully",
-          // });
         } else {
           res.status(403).json({
             success: false,
@@ -61,7 +49,6 @@ const Auth = () => {
           });
         }
       } catch (error) {
-        console.log("erroroorororoorokrdskfcjedsjf", error.message);
         return res.status(400).json({
           success: false,
           message: "User cannot loged in, please check authlogin controller",
@@ -70,21 +57,16 @@ const Auth = () => {
     },
     signIn: async (req, res) => {
       try {
-        const { firstName, lastName, email, password, accountType } = req.body;
-
-        const existingUser = await User.findOne({ where: { email: email } });
-        console.log("existing user->>>>>>>", existingUser);
-        if (existingUser) {
-          return res.status(400).json({
-            success: false,
-            message: "User already Exists",
-          });
-        }
-
-        //   TODO Add validtions errors here ->>>>>> done
-
+        const {
+          firstName,
+          lastName,
+          email,
+          password,
+          accountType,
+          phoneNumber,
+          address,
+        } = req.body;
         const errors = validationResult(req);
-        console.log("->>>>>>>>>>>>>>>>>>>>  ", errors);
         if (!errors.isEmpty()) {
           const error = errors.array().map((x) => {
             return {
@@ -93,6 +75,14 @@ const Auth = () => {
             };
           });
           return res.status(409).json({ error, success: false });
+        }
+        const existingUser = await User.findOne({ where: { email: email } });
+
+        if (existingUser) {
+          return res.status(400).json({
+            success: false,
+            message: "User already Exists",
+          });
         }
 
         let securePassword;
@@ -112,7 +102,6 @@ const Auth = () => {
           req.body.accountType === "Seller" ||
           req.body.accountType === "User"
         ) {
-          console.log("Helloooooooooooooooooooooooooooooooooooooooooooooooooo");
           const DATA = await User.create({
             firstName: firstName.trim(),
             lastName: lastName.trim(),
@@ -121,12 +110,13 @@ const Auth = () => {
             createdAt: Date.now(),
             updatedAt: Date.now(),
             password: securePassword,
+            phoneNumber: phoneNumber,
+            address: address.trim(),
           });
         } else {
           const checkAdminIsPresent = await User.findOne({
             where: { accountType: "Admin" },
           });
-          console.log("Check admin ->>>>>", checkAdminIsPresent);
           if (checkAdminIsPresent) {
             return res.status(401).json({
               success: false,
@@ -142,6 +132,8 @@ const Auth = () => {
             createdAt: Date.now(),
             updatedAt: Date.now(),
             password: securePassword,
+            phoneNumber: phoneNumber,
+            address: address.trim(),
           });
         }
 
@@ -150,7 +142,6 @@ const Auth = () => {
           message: `User created successfully for the role of ${accountType}`,
         });
       } catch (error) {
-        console.log("Error while signing ->>>>>>>>>>>>>>>>>>>>>>", error);
         return res.status(400).json({
           success: false,
           message:

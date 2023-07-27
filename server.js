@@ -40,10 +40,12 @@ app.get("/", (req, res) => {
 });
 
 //All routes
-const userRoutes = require("../Ecommerce/routes/userRoutes");
-const adminRoutes = require("../Ecommerce/routes/adminRoutes");
+const userRoutes = require("../Ecommerce-backend/routes/userRoutes");
+const adminRoutes = require("../Ecommerce-backend/routes/adminRoutes");
+const sellerRoutes = require("../Ecommerce-backend/routes/sellerRoutes");
 app.use("/api", userRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/seller", sellerRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running successfully at ${PORT}. `);

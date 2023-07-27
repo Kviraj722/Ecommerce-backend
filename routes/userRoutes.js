@@ -10,26 +10,28 @@ router.post("/login", Auth().login);
 router.post(
   "/user/signin",
   [
-    check("firstName").notEmpty().withMessage("FirstName is required"),
-    check("lastName").notEmpty().withMessage("LastName is required"),
+    body("firstName").notEmpty().withMessage("FirstName is required"),
+    body("lastName").notEmpty().withMessage("LastName is required"),
+    body("email").notEmpty().withMessage("email is required"),
+    body("password").notEmpty().withMessage("Password is required"),
+    body("phoneNumber")
+      .notEmpty()
+      .withMessage("phoneNumber is required")
+      .isString()
+      .withMessage("Phone number must be a string")
+      .matches(/^\d{10}$/)
+      .withMessage("Phone number must contain exactly 10 digits"),
+    body("address")
+      .notEmpty()
+      .withMessage("address required")
+      .isString()
+      .withMessage("Address must be in string"),
 
-    // body("accountType").custom((type) => {
-    //   if (!type) {
-    //     return Promise.reject("accountType field is required");
-    //   }
-    //   const isAdminPresent = User.findOne({ where: { accountType: "Admin" } });
-    //   if (isAdminPresent) {
-    //     return Promise.reject(
-    //       "You can not create account with account type admin"
-    //     );
-    //   }
-    // }),
   ],
   Auth().signIn
 );
 
 //admin routes -> create, see user's and seller's profile and update, delete user's
 // and seller's account
-
 
 module.exports = router;

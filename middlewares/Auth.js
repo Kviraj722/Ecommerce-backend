@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-exports.auth = async (req, res, next) => {
+const auth = async (req, res, next) => {
   try {
     const token =
       req.body.token ||
@@ -13,28 +13,22 @@ exports.auth = async (req, res, next) => {
         message: "Token is missing",
       });
     }
-    console.log("token in try", token);
+
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       if (decoded.exp <= Math.floor(Date.now() / 1000)) {
         return res.status(401).json({ message: "Token has expired." });
       }
-
-      console.log("decode -> ", decoded);
       req.user = decoded;
     } catch (error) {
-      console.log("token - catch ", token);
-      console.log("error in catch", error);
       return res.status(401).json({
         success: false,
         message: "token is invalid in authMid",
         error,
       });
     }
-
     next();
   } catch (error) {
-    console.log("auth middlaeware error", error);
     return res.status(401).json({
       success: false,
       message: "Something went wrong in auth middlware",
@@ -42,9 +36,8 @@ exports.auth = async (req, res, next) => {
   }
 };
 
-exports.isAdmin = async (req, res, next) => {
+const isAdmin = async (req, res, next) => {
   try {
-    console.log("user", req.user.accountType);
     if (req.user.accountType !== "Admin") {
       return res.status(401).json({
         success: false,
@@ -53,15 +46,13 @@ exports.isAdmin = async (req, res, next) => {
     }
     next();
   } catch (error) {
-    console.log("eroro", error);
     return res.status(401).json({
       success: false,
       message: "Something went wrong",
     });
   }
 };
-
-exports.isUser = async (req, res, next) => {
+const isUser = async (req, res, next) => {
   try {
     if (req.user.accountType !== "User") {
       return res.status(401).json({
@@ -79,7 +70,7 @@ exports.isUser = async (req, res, next) => {
   }
 };
 
-exports.isSeller = async (req, res, next) => {
+const isSeller = async (req, res, next) => {
   try {
     if (req.user.accountType !== "Seller") {
       return res.status(401).json({
@@ -91,8 +82,10 @@ exports.isSeller = async (req, res, next) => {
   } catch (error) {
     return res.status(401).json({
       success: false,
-      message: "Error while in isUser authentication",
+      message: "Error while in isSeller authentication",
       error,
     });
   }
 };
+
+module.exports = { isAdmin, isUser, isSeller, auth };
