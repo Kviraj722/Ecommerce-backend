@@ -1,7 +1,6 @@
-
 const Sequelize = require("sequelize");
 const sequelize = require("../config/dbconfig");
-
+const Category = require("../models/category");
 const Product = sequelize.define(
   "Product",
   {
@@ -29,14 +28,19 @@ const Product = sequelize.define(
     categoryId: {
       type: Sequelize.INTEGER,
       allowNull: true,
-      references: {
-        model: "Categories",
-        key: "id",
-      },
+      // references: {
+      //   model: "Category",
+      //   key: "id",
+      // },
       onUpdate: "CASCADE",
       onDelete: "CASCADE",
     },
   },
   { timestamps: true }
 );
+
+Product.belongsTo(Category, { foreignKey: "categoryId", as: "Category" });
+Category.hasMany(Product, { foreignKey: "categoryId", as: "Product" });
+
+
 module.exports = Product;
