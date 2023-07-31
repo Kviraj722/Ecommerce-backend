@@ -26,7 +26,8 @@
     "nodemon": "^2.0.22",
     "otp-generator": "^4.0.1",
     "parser": "^0.1.4",
-    "sequelize": "^6.32.1"
+    "sequelize": "^6.32.1",
+    "stripe": "^12.16.0"
   },
   "devDependencies": {
     "sequelize-cli": "^6.6.1"

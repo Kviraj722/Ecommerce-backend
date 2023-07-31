@@ -1,4 +1,3 @@
-
 const Sequelize = require("sequelize");
 const sequelize = require("../config/dbconfig");
 
@@ -35,8 +34,12 @@ const User = sequelize.define(
       type: Sequelize.STRING,
       allowNull: false, // Change to false if phone number is required
     },
-    address: {
+    stripeCustomerId: {
       type: Sequelize.STRING,
+      allowNull: true,
+    },
+    address: {
+      type: Sequelize.JSON,
       allowNull: false, // Change to false if address is required
     },
     createdAt: {

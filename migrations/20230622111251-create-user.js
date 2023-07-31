@@ -37,6 +37,10 @@ module.exports = {
         type: Sequelize.ENUM("Admin", "Seller", "User"),
         allowNull: false,
       },
+      stripeCustomerId: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

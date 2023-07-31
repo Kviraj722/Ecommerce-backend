@@ -64,7 +64,7 @@ const Auth = () => {
           password,
           accountType,
           phoneNumber,
-          address,
+          address: { line1, line2, city, state, postal_code, country },
         } = req.body;
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -111,7 +111,14 @@ const Auth = () => {
             updatedAt: Date.now(),
             password: securePassword,
             phoneNumber: phoneNumber,
-            address: address.trim(),
+            address: {
+              line1: req.body.address.line1,
+              line2: req.body.address.line2,
+              city: req.body.address.city,
+              state: req.body.address.state,
+              postal_code: req.body.address.postal_code,
+              country: req.body.address.country,
+            },
           });
         } else {
           const checkAdminIsPresent = await User.findOne({
