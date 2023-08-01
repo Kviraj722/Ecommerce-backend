@@ -6,6 +6,7 @@ const { body, check } = require("express-validator");
 const Auth = require("../controllers/auth");
 const User = require("../models/user");
 const adminController = require("../controllers/adminController");
+const customerController = require("../controllers/custormerController");
 router.post("/login", Auth().login);
 router.post(
   "/user/signin",
@@ -24,14 +25,19 @@ router.post(
     body("address")
       .notEmpty()
       .withMessage("address required")
-      .isString()
+      .isObject()
       .withMessage("Address must be in string"),
-
   ],
   Auth().signIn
 );
 
-//admin routes -> create, see user's and seller's profile and update, delete user's
-// and seller's account
-
+//customer's routes
+router.post(
+  "/purchase/:id",
+  auth,
+  isUser,
+  customerController().purchaseProduct
+);
+router.post("/cancel-order/:id",auth, isUser, customerController().cancelOrder)
+// router.put("/update-quantity/:id",auth,isUser,customerController().updatePurchaseOrder)
 module.exports = router;
