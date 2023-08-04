@@ -36,7 +36,7 @@ The project incorporates Stripe, a popular and secure payment gateway. This inte
 
 To run the backend locally, follow these steps:
 
-    Clone this repository: git clone https://github.com/your-username/ecommerce-backend.git
+    Clone this repository: git clone https://github.com/Kviraj722/ecommerce-backend.git
     Install dependencies: npm install
     Set up your environment variables. Create a .env file and provide the necessary Stripe API keys:
 
