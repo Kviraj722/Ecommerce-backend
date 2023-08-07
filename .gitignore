@@ -1,2 +1,6 @@
 node_modules
-Todo
+todo
+.env
+console.log
+.log
+.gitigone
