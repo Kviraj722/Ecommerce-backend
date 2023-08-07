@@ -16,9 +16,8 @@ const password = process.env.PASSWORD;
 const sequelize = new Sequelize(dbName, userName, password, {
   host: process.env.HOST,
   dialect: process.env.DIALECT,
+  timezone: "+05:30",
 });
-console.log("dbName", dbName);
-console.log("userName", userName, password);
 
 sequelize
   .authenticate()

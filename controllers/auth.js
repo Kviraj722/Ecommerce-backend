@@ -89,14 +89,12 @@ const Auth = () => {
         try {
           securePassword = await bcrypt.hash(password, 10);
         } catch (error) {
-          console.log("Error while hashing the pwd -> ", error);
           res.status.json({
             success: false,
             message: "not able to hash the password",
             error,
           });
         }
-        console.log("secured password -> ", securePassword);
 
         if (
           req.body.accountType === "Seller" ||
@@ -135,12 +133,19 @@ const Auth = () => {
             firstName: firstName,
             lastName: lastName,
             email: email,
-            accountType: accountType,
+            accountType: req.body.accountType,
             createdAt: Date.now(),
             updatedAt: Date.now(),
             password: securePassword,
             phoneNumber: phoneNumber,
-            address: address.trim(),
+            address: {
+              line1: req.body.address.line1,
+              line2: req.body.address.line2,
+              city: req.body.address.city,
+              state: req.body.address.state,
+              postal_code: req.body.address.postal_code,
+              country: req.body.address.country,
+            },
           });
         }
 
