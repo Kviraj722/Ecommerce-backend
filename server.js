@@ -5,10 +5,12 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { Sequelize } = require("sequelize");
+const fileUpload = require("express-fileupload");
 
 app.use(cookieParser());
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(fileUpload());
 // const userRoutes = require(".")
 const dbName = process.env.DATABASE;
 const userName = process.env.USERNAME;
